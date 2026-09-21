@@ -51,13 +51,30 @@ Abra http://127.0.0.1:8000 e entre com o usuário criado.
 
 **Não existe cadastro público.** Cada usuário é criado por quem administra, com o comando `createsuperuser` (ou pelo painel em `/admin/`). A senha precisa ter pelo menos 10 caracteres.
 
+### Itens de exemplo
+
+O cofre começa vazio. Para ver as telas com conteúdo — e conferir os agrupamentos, a busca e
+o filtro por etiqueta com dado de verdade:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py semear
+```
+
+São 30 prompts (em seis categorias), 30 ideias (nos três status) e 30 links. Rodar duas vezes
+não duplica nada, e o que você editar fica como está. Para tirá-los depois, sem encostar no que
+é seu:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py semear --limpar
+```
+
 ### Testes
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py test
 ```
 
-Os testes cobrem: acesso exigindo login, criar/editar/excluir nas três áreas, busca e etiquetas, agrupamentos e a área do usuário (tema, nome e senha).
+Os testes cobrem: acesso exigindo login, criar/editar/excluir nas três áreas, busca e etiquetas, agrupamentos, a área do usuário (tema, nome e senha) e o comando `semear`.
 
 ## Segurança
 
@@ -71,6 +88,7 @@ Os testes cobrem: acesso exigindo login, criar/editar/excluir nas três áreas, 
 ```
 cofre/     configurações do projeto Django (settings, urls)
 acervo/    o aplicativo: modelos, telas, formulários, testes
+  management/commands/semear.py   os itens de exemplo
   static/acervo/   estilo.css, vida.js (animações) e as cenas dos temas (SVG)
   templates/       páginas HTML
 ```
