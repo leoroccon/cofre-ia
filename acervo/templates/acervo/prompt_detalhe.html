@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}{{ object.titulo }}{% endblock %}
+{% block conteudo %}
+<div class="estreito">
+<div class="cabecalho">
+  <h1>{{ object.titulo }}{% if object.favorito %} <span class="estrela" title="Favorito">★</span>{% endif %}</h1>
+  <a class="btn-acao editar" href="{% url 'editar' 'prompts' object.pk %}">Editar</a>
+</div>
+
+{% if object.descricao %}<p class="texto">{{ object.descricao }}</p>{% endif %}
+<p class="suave">
+  {{ object.ferramenta }}{% if object.ferramenta and object.categoria %} · {% endif %}{{ object.categoria }}
+</p>
+
+<section class="cartao">
+  <div class="cabecalho">
+    <h2>Prompt</h2>
+    <button type="button" class="btn-acao copiar btn-copiar" data-alvo="#texto-prompt">Copiar</button>
+  </div>
+  <pre class="texto" id="texto-prompt">{{ object.texto }}</pre>
+</section>
+
+<p class="etiquetas">
+  {% for e in object.lista_etiquetas %}<a class="tag" href="{% url 'lista' 'prompts' %}?etiqueta={{ e|urlencode }}">{{ e }}</a>{% endfor %}
+</p>
+<p class="suave">Criado por {{ object.criado_por.get_username|default:"—" }} · atualizado em {{ object.atualizado_em|date:"d/m/Y H:i" }}</p>
+
+</div>
+
+<script>
+  document.getElementById('copiar').addEventListener('click', function () {
+    var botao = this;
+    navigator.clipboard.writeText(document.getElementById('texto-prompt').textContent).then(function () {
+      botao.textContent = 'Copiado!';
+      botao.classList.remove('pulsou');
+      void botao.offsetWidth;  // reinicia a animação se clicar de novo
+      botao.classList.add('pulsou');
+      setTimeout(function () { botao.textContent = 'Copiar'; botao.classList.remove('pulsou'); }, 2000);
+    });
+  });
+</script>
+{% endblock %}

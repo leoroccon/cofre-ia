@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block titulo %}Minha conta{% endblock %}
+{% block conteudo %}
+<div class="estreito">
+  <h1>Minha conta</h1>
+
+  <section class="cartao">
+    <h2>Tema</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="tema">
+      <div class="temas">
+        {% for valor, nome in temas %}
+        <label class="opcao-tema">
+          <input type="radio" name="tema" value="{{ valor }}" {% if form_tema.tema.value == valor %}checked{% endif %}>
+          <span class="amostra amostra-{{ valor }}"></span>
+          <span class="nome-tema">{{ nome }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      {{ form_tema.tema.errors }}
+      <button type="submit" class="btn">Aplicar tema</button>
+    </form>
+  </section>
+
+  <section class="cartao">
+    <h2>Nome de usuário</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="nome">
+      {{ form_nome.non_field_errors }}
+      <div class="campo">
+        {{ form_nome.username.label_tag }}
+        {{ form_nome.username }}
+        <small class="suave">{{ form_nome.username.help_text }}</small>
+        {{ form_nome.username.errors }}
+      </div>
+      <div class="botoes"><button type="submit" class="btn">Salvar nome</button></div>
+    </form>
+  </section>
+
+  <section class="cartao">
+    <h2>Senha</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="senha">
+      {{ form_senha.non_field_errors }}
+      {% for campo in form_senha %}
+      <div class="campo">
+        {{ campo.label_tag }}
+        {{ campo }}
+        {% if campo.help_text %}<small class="suave">{{ campo.help_text|safe }}</small>{% endif %}
+        {{ campo.errors }}
+      </div>
+      {% endfor %}
+      <div class="botoes"><button type="submit" class="btn">Alterar senha</button></div>
+    </form>
+  </section>
+</div>
+{% endblock %}

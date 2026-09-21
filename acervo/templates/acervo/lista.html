@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block titulo %}{{ cfg.nome }}{% endblock %}
+{% block conteudo %}
+<h1>{{ cfg.nome }}</h1>
+
+<form method="get" class="busca">
+  <div class="caixa-busca">
+    {% if etiqueta %}
+    <span class="tag chip-filtro">
+      {{ etiqueta }}
+      <a href="{% url 'lista' area %}{% if q %}?q={{ q|urlencode }}{% endif %}" title="Remover etiqueta" aria-label="Remover etiqueta {{ etiqueta }}">✕</a>
+      <input type="hidden" name="etiqueta" value="{{ etiqueta }}">
+    </span>
+    {% endif %}
+    <input type="search" name="q" value="{{ q }}" placeholder="{% if etiqueta %}Buscar nesta etiqueta...{% else %}Buscar...{% endif %}">
+  </div>
+  <button type="submit" class="btn btn-fantasma">Buscar</button>
+  <a class="btn btn-icone" href="{% url 'criar' area %}" title="Novo" aria-label="Novo">+</a>
+  {% if q or etiqueta %}<a href="{% url 'lista' area %}" class="suave">limpar filtros</a>{% endif %}
+</form>
+
+{% for grupo in grupos %}
+<section class="grupo">
+  <h2 class="grupo-titulo">{{ grupo.nome }} <span class="contagem">{{ grupo.itens|length }}</span></h2>
+  <div class="lista-prompts">
+    {% for item in grupo.itens %}
+    {# a mesma linha serve para prompts, ideias e links; prompts copiam ao clicar e links abrem o endereço #}
+    <article class="cartao linha-prompt{% if area != 'ideias' %} clicavel{% endif %}"{% if area == 'links' %} data-url="{{ item.url }}"{% endif %}>
+      <div class="linha-texto">
+        <h3>
+          {% if area == 'prompts' %}
+            <button type="button" class="titulo-copiar btn-copiar" data-texto="{{ item.texto }}" aria-label="Copiar o prompt {{ item.titulo }}">{{ item.titulo }}</button>
+            {% if item.favorito %}<span class="estrela" aria-label="Favorito">★</span>{% endif %}
+          {% elif area == 'links' %}
+            <a class="titulo-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">{{ item.titulo }}</a>
+          {% else %}
+            {{ item.titulo }}
+          {% endif %}
+        </h3>
+        <p class="descricao">{{ item.descricao|default:"(sem descrição)" }}</p>
+      </div>
+      <div class="linha-meta">
+        {% if area == 'prompts' and item.ferramenta %}<span class="ferramenta">{{ item.ferramenta }}</span>{% endif %}
+        {% if area == 'links' %}<span class="ferramenta">{{ item.dominio }}</span>{% endif %}
+        <span class="etiquetas">
+          {% for e in item.lista_etiquetas %}<a class="tag" href="?etiqueta={{ e|urlencode }}">{{ e }}</a>{% endfor %}
+        </span>
+      </div>
+      <div class="linha-acoes">
+        {% if area == 'prompts' %}
+          <a class="btn-acao abrir" href="{% url 'prompt_detalhe' item.pk %}">Abrir</a>
+        {% elif area == 'links' %}
+          <a class="btn-acao abrir" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">Abrir</a>
+        {% endif %}
+        <span class="acoes">
+          <a class="btn-acao editar" href="{% url 'editar' area item.pk %}">Editar</a>
+          <a class="btn-acao excluir" href="{% url 'excluir' area item.pk %}">Excluir</a>
+        </span>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% empty %}
+<p class="suave">Nenhum item encontrado.</p>
+{% endfor %}
+{% endblock %}

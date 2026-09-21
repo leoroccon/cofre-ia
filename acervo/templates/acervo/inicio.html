@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block titulo %}Início{% endblock %}
+{% block conteudo %}
+<h1 class="hero" data-letras>Cofre de IA</h1>
+<p class="saudacao">Olá, {{ user.first_name|default:user.get_username }}.</p>
+<div class="estreito sobre">
+  <p class="lead">
+    Este é o seu espaço privado para guardar o que você descobre e cria
+    com inteligência artificial. Só quem tem login consegue ver o conteúdo.
+  </p>
+
+  <h2>O que dá para guardar</h2>
+  <dl class="areas">
+    <dt><a href="{% url 'lista' 'prompts' %}">Prompts</a> <span class="contagem">{{ totais.prompts }}</span></dt>
+    <dd>Os textos que você usa nas ferramentas de IA. Cada prompt tem uma descrição (para que serve), a ferramenta usada e etiquetas. O texto completo abre com um clique e pode ser copiado.</dd>
+
+    <dt><a href="{% url 'lista' 'ideias' %}">Ideias de IA</a> <span class="contagem">{{ totais.ideias }}</span></dt>
+    <dd>Ideias de projetos e usos de IA, com status: rascunho, em teste ou feita.</dd>
+
+    <dt><a href="{% url 'lista' 'links' %}">Links</a> <span class="contagem">{{ totais.links }}</span></dt>
+    <dd>Endereços de sites, artigos e ferramentas que valem a pena guardar, com uma descrição.</dd>
+  </dl>
+
+  <h2>Dicas rápidas</h2>
+  <ul class="dicas">
+    <li>Use o menu no topo para trocar de área.</li>
+    <li>Clique em uma <strong>etiqueta</strong> para ver tudo que tem a mesma marcação.</li>
+    <li>A busca procura no título, na descrição e no texto dos itens.</li>
+    <li>O conteúdo é compartilhado entre os usuários do cofre.</li>
+    <li>Clique no seu nome, no canto superior direito, para mudar o tema, o nome de usuário e a senha.</li>
+  </ul>
+</div>
+{% endblock %}

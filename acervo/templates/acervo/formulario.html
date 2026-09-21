@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}{% if object %}Editar{% else %}Novo{% endif %} · {{ cfg.nome }}{% endblock %}
+{% block conteudo %}
+<h1>{% if object %}Editar{% else %}Nov{{ cfg.artigo }}{% endif %} {{ cfg.singular }}</h1>
+<form method="post" class="cartao formulario">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for campo in form %}
+  <div class="campo{% if campo.field.widget.input_type == 'checkbox' %} campo-check{% endif %}">
+    {{ campo.label_tag }}
+    {{ campo }}
+    {% if campo.help_text %}<small class="suave">{{ campo.help_text }}</small>{% endif %}
+    {{ campo.errors }}
+  </div>
+  {% endfor %}
+  <div class="botoes">
+    <button type="submit" class="btn">Salvar</button>
+    <a href="{% url 'lista' area %}" class="btn btn-fantasma">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

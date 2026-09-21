@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block titulo %}Excluir{% endblock %}
+{% block conteudo %}
+<section class="cartao login">
+  <h1>Excluir {{ cfg.singular }}?</h1>
+  <p>“{{ object.titulo }}” será apagad{{ cfg.artigo }} de forma definitiva.</p>
+  <form method="post" class="botoes">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-perigo">Sim, excluir</button>
+    <a href="{% url 'lista' area %}" class="btn btn-fantasma">Cancelar</a>
+  </form>
+</section>
+{% endblock %}
