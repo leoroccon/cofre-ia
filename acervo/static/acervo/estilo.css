@@ -314,7 +314,13 @@ body.tema-paisagismo label, body.tema-paisagismo select, body.tema-paisagismo .o
   font-size: clamp(2.6rem, 8vw, 5.5rem); font-weight: 700; letter-spacing: -.035em;
   line-height: 1; margin: 0 0 .5rem;
 }
-.hero .letra { display: inline-block; }
+/* Todas as letras do título usam exatamente a mesma fonte, peso e ajustes (sem junções nem variações especiais) */
+.hero .letra {
+  display: inline-block;
+  font-family: var(--fonte-titulo); font-weight: 700; font-style: normal;
+  font-optical-sizing: auto; font-variation-settings: normal;
+  font-feature-settings: normal; font-variant-ligatures: none; font-synthesis: none;
+}
 body.tema-circuito .hero .letra {
   animation: ligar .95s both; animation-delay: calc(var(--i) * 70ms + 150ms);
 }
