@@ -96,7 +96,7 @@ h2 { font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 .
 .marca { font-weight: 700; font-size: 1.6rem; letter-spacing: -.02em; color: var(--texto) !important; display: flex; align-items: center; gap: .6rem; }
 .ponto { width: 13px; height: 13px; border-radius: 50%; background: var(--destaque); box-shadow: 0 0 10px 2px var(--destaque); }
 .topo nav { display: flex; gap: 2rem; flex: 1; }
-.topo nav a { font-size: 1.35rem; font-weight: 600; }
+.topo nav a { font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 .sair { display: flex; align-items: center; gap: .75rem; margin: 0; }
 .sair .btn { font-size: 1.1rem; padding: 8px 20px; }
 .usuario {
