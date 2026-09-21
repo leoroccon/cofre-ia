@@ -83,7 +83,9 @@ body {
 a { color: var(--destaque); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-h1, h2, .marca { font-family: var(--fonte-titulo); }
+h1, h2 { font-family: var(--fonte-titulo); }
+/* O nome "Cofre de IA" usa a mesma fonte do texto: o "f" da fonte dos títulos destoava do "o" */
+.marca { font-family: var(--fonte-texto); }
 h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; margin: 0 0 1rem; }
 h2 { font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 .5rem; }
 
@@ -317,7 +319,7 @@ body.tema-paisagismo label, body.tema-paisagismo select, body.tema-paisagismo .o
 /* Todas as letras do título usam exatamente a mesma fonte, peso e ajustes (sem junções nem variações especiais) */
 .hero .letra {
   display: inline-block;
-  font-family: var(--fonte-titulo); font-weight: 700; font-style: normal;
+  font-family: var(--fonte-texto); font-weight: 700; font-style: normal;
   font-optical-sizing: auto; font-variation-settings: normal;
   font-feature-settings: normal; font-variant-ligatures: none; font-synthesis: none;
 }
