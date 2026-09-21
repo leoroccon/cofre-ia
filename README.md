@@ -32,7 +32,8 @@ Cada tema tem o seu cursor. Quem desativa animações no sistema recebe o site c
 - Python 3.12 e **Django 6**
 - **django-axes**: bloqueia o acesso por 1 hora após 5 senhas erradas
 - **WhiteNoise** para os arquivos estáticos
-- **SQLite** (suficiente para poucos usuários)
+- **SQLite** no seu computador; em produção, **PostgreSQL** pela variável `DATABASE_URL`
+  (sem ela, o projeto cai no SQLite — não precisa instalar banco para desenvolver)
 - JavaScript e CSS puros, sem bibliotecas de front-end
 
 ## Rodar no seu computador (Windows)

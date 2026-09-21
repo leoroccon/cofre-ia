@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,12 +78,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cofre.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# No seu computador, SQLite (não precisa instalar nada). Em produção, o .env traz uma
+# DATABASE_URL apontando para o PostgreSQL.
+DATABASE_URL = os.environ.get('DATABASE_URL', '')
+if DATABASE_URL:
+    DATABASES = {'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 
 AUTH_PASSWORD_VALIDATORS = [
