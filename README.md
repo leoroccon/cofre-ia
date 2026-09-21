@@ -31,9 +31,8 @@ Cada tema tem o seu cursor. Quem desativa animações no sistema recebe o site c
 
 - Python 3.12 e **Django 6**
 - **django-axes**: bloqueia o acesso por 1 hora após 5 senhas erradas
-- **WhiteNoise** para os arquivos estáticos e **gunicorn** em produção
+- **WhiteNoise** para os arquivos estáticos
 - **SQLite** (suficiente para poucos usuários)
-- **Caddy** na frente, com HTTPS automático
 - JavaScript e CSS puros, sem bibliotecas de front-end
 
 ## Rodar no seu computador (Windows)
@@ -60,62 +59,11 @@ Abra http://127.0.0.1:8000 e entre com o usuário criado.
 
 Os testes cobrem: acesso exigindo login, criar/editar/excluir nas três áreas, busca e etiquetas, agrupamentos e a área do usuário (tema, nome e senha).
 
-## Publicar numa VPS (Ubuntu 24.04)
-
-A pasta `deploy/` traz tudo o que é preciso:
-
-| Arquivo | Para quê |
-|---|---|
-| `instalar-servidor.sh` | instala e configura tudo num servidor novo |
-| `cofre.service` | roda o site como serviço, reiniciando sozinho |
-| `Caddyfile` | modelo de configuração do HTTPS |
-| `backup.sh` | backup diário do banco, guardando 14 dias |
-
-1. Contrate uma VPS com Ubuntu 24.04 (1 GB de memória ou mais) e entre nela por SSH.
-2. Copie o projeto para `/home/cofre/app`, sem as pastas `.venv` e `.git` e sem o `db.sqlite3`.
-3. Rode o script como root, informando o domínio:
-
-   ```bash
-   DOMINIO=meusite.com.br bash /home/cofre/app/deploy/instalar-servidor.sh
-   ```
-
-   Sem domínio ainda, use o endereço com o IP, que também ganha HTTPS: `DOMINIO=203-0-113-10.sslip.io`.
-4. Crie os usuários:
-
-   ```bash
-   su - cofre -c 'cd app && .venv/bin/python manage.py createsuperuser'
-   ```
-
-O script instala os programas, cria o usuário `cofre`, gera o `.env` com uma chave secreta nova, prepara o banco, liga o site como serviço, configura o Caddy, abre só as portas 22, 80 e 443 no firewall e agenda o backup. Pode ser executado de novo para atualizar, sem apagar o banco nem o `.env`.
-
-### Configuração (`.env`)
-
-Em produção as configurações ficam num arquivo `.env`, fora do código. Veja o modelo em `.env.example`.
-
-| Variável | Para quê |
-|---|---|
-| `DEBUG` | `False` em produção |
-| `SECRET_KEY` | chave secreta longa e aleatória |
-| `ALLOWED_HOSTS` | domínio do site |
-| `CSRF_TRUSTED_ORIGINS` | o mesmo domínio, com `https://` |
-
-### Backup e restauração
-
-O backup fica em `/home/cofre/backups`, um arquivo por dia. Para restaurar:
-
-```bash
-systemctl stop cofre
-cp /home/cofre/backups/db-AAAA-MM-DD.sqlite3 /home/cofre/app/db.sqlite3
-chown cofre:cofre /home/cofre/app/db.sqlite3
-systemctl start cofre
-```
-
 ## Segurança
 
 - Todas as páginas exigem login, e não há cadastro público.
 - 5 tentativas erradas bloqueiam o acesso por 1 hora (por IP e usuário).
 - Senhas com no mínimo 10 caracteres, sem senhas comuns nem só números.
-- Em produção: HTTPS obrigatório, cookies seguros, HSTS e `DEBUG` desligado.
 - O `.env` e o banco de dados **nunca** vão para o Git (veja `.gitignore`).
 
 ## Estrutura
@@ -125,7 +73,6 @@ cofre/     configurações do projeto Django (settings, urls)
 acervo/    o aplicativo: modelos, telas, formulários, testes
   static/acervo/   estilo.css, vida.js (animações) e as cenas dos temas (SVG)
   templates/       páginas HTML
-deploy/    arquivos para publicar na VPS
 ```
 
 Os temas são só variáveis de cor no `estilo.css`. Para criar um tema novo, adicione uma opção em `Perfil.Tema` (`acervo/models.py`) e um bloco `body.tema-<nome>` no CSS.
