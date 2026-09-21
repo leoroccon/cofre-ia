@@ -8,3 +8,6 @@ backups/
 
 # Arquivos de publicação em servidor: só ficam no computador, não vão para o GitHub
 deploy/
+
+# Instruções locais para o Claude
+CLAUDE.md
