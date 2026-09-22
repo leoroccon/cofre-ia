@@ -33,6 +33,8 @@
             {% if item.favorito %}<span class="estrela" aria-label="Favorito">★</span>{% endif %}
           {% elif area == 'links' %}
             <a class="titulo-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">{{ item.titulo }}</a>
+          {% elif area == 'videos' %}
+            <a class="titulo-link" href="{% url 'video_detalhe' item.pk %}">{{ item.titulo }}</a>
           {% else %}
             {{ item.titulo }}
           {% endif %}
@@ -51,6 +53,8 @@
           <a class="btn-acao abrir" href="{% url 'prompt_detalhe' item.pk %}">Abrir</a>
         {% elif area == 'links' %}
           <a class="btn-acao abrir" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">Abrir</a>
+        {% elif area == 'videos' %}
+          <a class="btn-acao abrir" href="{% url 'video_detalhe' item.pk %}">Abrir</a>
         {% endif %}
         <span class="acoes">
           <a class="btn-acao editar" href="{% url 'editar' area item.pk %}">Editar</a>

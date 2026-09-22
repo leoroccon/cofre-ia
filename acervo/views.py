@@ -9,14 +9,15 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
-from .forms import IdeiaForm, LinkForm, NomeUsuarioForm, PromptForm, TemaForm
-from .models import Ideia, Link, Perfil, Prompt
+from .forms import IdeiaForm, LinkForm, NomeUsuarioForm, PromptForm, TemaForm, VideoForm
+from .models import Ideia, Link, Perfil, Prompt, Video
 
-# Cada área (prompts, ideias, links) usa as mesmas telas; só mudam estes dados.
+# Cada área (prompts, ideias, links, vídeos) usa as mesmas telas; só mudam estes dados.
 AREAS = {
     'prompts': {'model': Prompt, 'form': PromptForm, 'nome': 'Prompts', 'singular': 'prompt', 'artigo': 'o'},
     'ideias': {'model': Ideia, 'form': IdeiaForm, 'nome': 'Ideias de IA', 'singular': 'ideia', 'artigo': 'a'},
     'links': {'model': Link, 'form': LinkForm, 'nome': 'Links', 'singular': 'link', 'artigo': 'o'},
+    'videos': {'model': Video, 'form': VideoForm, 'nome': 'Vídeos', 'singular': 'vídeo', 'artigo': 'o'},
 }
 
 
@@ -118,7 +119,9 @@ def agrupar_ideias(itens):
     return [grupos[s.value] for s in Ideia.Status if s.value in grupos]
 
 
-AGRUPADORES = {'prompts': agrupar_por_categoria, 'ideias': agrupar_ideias, 'links': agrupar_links}
+AGRUPADORES = {
+    'prompts': agrupar_por_categoria, 'ideias': agrupar_ideias, 'links': agrupar_links, 'videos': agrupar_links,
+}
 
 
 class ListaView(AreaMixin, ListView):
@@ -154,6 +157,16 @@ class PromptDetalheView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx.update(area='prompts', cfg=AREAS['prompts'])
+        return ctx
+
+
+class VideoDetalheView(LoginRequiredMixin, DetailView):
+    model = Video
+    template_name = 'acervo/video_detalhe.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx.update(area='videos', cfg=AREAS['videos'])
         return ctx
 
 

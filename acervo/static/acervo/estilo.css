@@ -110,6 +110,12 @@ h2 { font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 .
 .conteudo { padding: 24px 24px 64px; }
 .formulario, .estreito { max-width: 800px; }
 
+.video-embutido {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; margin: 16px 0;
+  border-radius: 12px; overflow: hidden; background: var(--codigo);
+}
+.video-embutido iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
 .cartao {
   position: relative;
   background: var(--cartao);

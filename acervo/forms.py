@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from .models import Ideia, Link, Perfil, Prompt
+from .models import Ideia, Link, Perfil, Prompt, Video
 
 
 class TemaForm(forms.ModelForm):
@@ -45,3 +45,13 @@ class LinkForm(forms.ModelForm):
         model = Link
         fields = ['titulo', 'url', 'descricao', 'etiquetas']
         widgets = {'descricao': forms.Textarea(attrs={'rows': 4})}
+
+
+class VideoForm(forms.ModelForm):
+    class Meta:
+        model = Video
+        fields = ['titulo', 'url', 'descricao', 'resumo', 'etiquetas']
+        widgets = {
+            'descricao': forms.Textarea(attrs={'rows': 3}),
+            'resumo': forms.Textarea(attrs={'rows': 6}),
+        }

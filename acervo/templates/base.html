@@ -18,6 +18,7 @@
       <a href="{% url 'lista' 'prompts' %}">Prompts</a>
       <a href="{% url 'lista' 'ideias' %}">Ideias</a>
       <a href="{% url 'lista' 'links' %}">Links</a>
+      <a href="{% url 'lista' 'videos' %}">Vídeos</a>
     </nav>
     <form method="post" action="{% url 'logout' %}" class="sair">
       {% csrf_token %}

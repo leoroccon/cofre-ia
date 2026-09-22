@@ -82,3 +82,30 @@ class Link(ItemBase):
     class Meta(ItemBase.Meta):
         verbose_name = 'link'
         verbose_name_plural = 'links'
+
+
+class Video(ItemBase):
+    url = models.URLField('endereço do vídeo', max_length=500)
+    descricao = models.TextField('descrição', blank=True)
+    resumo = models.TextField(
+        'resumo', blank=True, help_text='Um resumo do conteúdo do vídeo, para lembrar do que se trata sem assistir de novo.'
+    )
+
+    @property
+    def youtube_id(self):
+        """ID do vídeo no YouTube, para gerar a miniatura e o player embutido."""
+        partes = urlparse(self.url)
+        host = partes.netloc.removeprefix('www.').removeprefix('m.')
+        if host == 'youtu.be':
+            return partes.path.lstrip('/') or None
+        if host in ('youtube.com', 'music.youtube.com'):
+            if partes.path == '/watch':
+                from urllib.parse import parse_qs
+                return parse_qs(partes.query).get('v', [None])[0]
+            if partes.path.startswith(('/embed/', '/shorts/')):
+                return partes.path.split('/')[2] or None
+        return None
+
+    class Meta(ItemBase.Meta):
+        verbose_name = 'vídeo'
+        verbose_name_plural = 'vídeos'
