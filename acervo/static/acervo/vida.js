@@ -69,9 +69,11 @@
     var player = botao.parentElement.querySelector('.video-player');
     if (!id || !player) return;
     var iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
+    iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
     iframe.title = botao.getAttribute('aria-label') || 'Vídeo';
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.setAttribute('frameborder', '0');
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
     iframe.allowFullscreen = true;
     iframe.loading = 'lazy';
     player.replaceChildren(iframe);

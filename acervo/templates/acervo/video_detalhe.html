@@ -9,9 +9,9 @@
 
 {% if object.youtube_id %}
 <div class="video-embutido">
-  <iframe src="https://www.youtube-nocookie.com/embed/{{ object.youtube_id }}" title="{{ object.titulo }}"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen loading="lazy"></iframe>
+  <iframe src="https://www.youtube.com/embed/{{ object.youtube_id }}" title="{{ object.titulo }}" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
 </div>
 {% endif %}
 
