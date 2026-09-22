@@ -61,6 +61,24 @@
     setTimeout(function () { t.classList.add('saindo'); }, 1500);
     setTimeout(function () { t.remove(); }, 1950);
   }
+  /* 3a. Vídeos: clicar na miniatura toca o vídeo ali mesmo, sem sair da página */
+  document.addEventListener('click', function (e) {
+    var botao = e.target.closest && e.target.closest('.video-tocar');
+    if (!botao) return;
+    var id = botao.getAttribute('data-youtube');
+    var player = botao.parentElement.querySelector('.video-player');
+    if (!id || !player) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
+    iframe.title = botao.getAttribute('aria-label') || 'Vídeo';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    iframe.loading = 'lazy';
+    player.replaceChildren(iframe);
+    var linha = botao.closest('.linha-video');
+    if (linha) linha.classList.add('tocando');
+  });
+
   document.addEventListener('click', function (e) {
     var linha = e.target.closest && e.target.closest('.linha-prompt');
     var endereco = linha && linha.getAttribute('data-url');

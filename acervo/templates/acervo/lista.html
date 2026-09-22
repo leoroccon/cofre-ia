@@ -25,7 +25,16 @@
   <div class="lista-prompts">
     {% for item in grupo.itens %}
     {# a mesma linha serve para prompts, ideias e links; prompts copiam ao clicar e links abrem o endereço #}
-    <article class="cartao linha-prompt{% if area != 'ideias' %} clicavel{% endif %}"{% if area == 'links' %} data-url="{{ item.url }}"{% endif %}>
+    <article class="cartao linha-prompt{% if area != 'ideias' %} clicavel{% endif %}{% if area == 'videos' %} linha-video{% endif %}"{% if area == 'links' %} data-url="{{ item.url }}"{% endif %}>
+      {% if area == 'videos' and item.youtube_id %}
+      <div class="video-previa">
+        <button type="button" class="video-tocar" data-youtube="{{ item.youtube_id }}" aria-label="Tocar {{ item.titulo }}">
+          <img src="https://i.ytimg.com/vi/{{ item.youtube_id }}/mqdefault.jpg" alt="" loading="lazy">
+          <span class="icone-play" aria-hidden="true"></span>
+        </button>
+        <div class="video-player"></div>
+      </div>
+      {% endif %}
       <div class="linha-texto">
         <h3>
           {% if area == 'prompts' %}
