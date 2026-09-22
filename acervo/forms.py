@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth import get_user_model
 
@@ -48,6 +50,13 @@ class LinkForm(forms.ModelForm):
 
 
 class VideoForm(forms.ModelForm):
+    # CharField (não URLField): assim aceita quem cola o código <iframe> de incorporar do YouTube;
+    # a extração do endereço e a validação do formato ficam por conta de clean_url, abaixo.
+    url = forms.CharField(
+        label='endereço do vídeo', max_length=500,
+        widget=forms.TextInput(attrs={'placeholder': 'Cole aqui o link do vídeo (ou o código de incorporar)'}),
+    )
+
     class Meta:
         model = Video
         fields = ['titulo', 'url', 'descricao', 'resumo', 'etiquetas']
@@ -55,3 +64,13 @@ class VideoForm(forms.ModelForm):
             'descricao': forms.Textarea(attrs={'rows': 3}),
             'resumo': forms.Textarea(attrs={'rows': 6}),
         }
+
+    def clean_url(self):
+        valor = self.cleaned_data['url'].strip()
+        # quem cola o <iframe> inteiro do YouTube: pega só o endereço do src
+        trecho = re.search(r'src=[\'"]([^\'"]+)[\'"]', valor)
+        if trecho:
+            valor = trecho.group(1).strip()
+        if valor.startswith('//'):
+            valor = 'https:' + valor
+        return forms.URLField().clean(valor)  # valida o formato (levanta erro se não for uma URL válida)
